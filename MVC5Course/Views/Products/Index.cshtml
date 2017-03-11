@@ -11,8 +11,10 @@
 </p>
 
 <p>
-    <form>  @*新增搜尋欄位*@
-        <input type="search" name="keyword" value="" />
+    <form>
+        @*新增搜尋欄位*@
+        @*<input type="search" name="keyword" value="" />*@
+        @Html.TextBox("keyword") @* 搜尋框keep搜尋文字 *@
         <input type="submit" value="搜尋" />
     </form>
 </p>
@@ -28,21 +30,23 @@
             @*<a href="@Url.Action("Index", "Products", new { sortBy = "-Price" })">↓</a>*@ @*欄位排序*@
             <a href="@Url.Action("Index", "Products", new { sortBy = "-Price", keyword = ViewBag.keyword })">↓</a>@*欄位搜尋並可排序*@
         </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Active)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stock)
-            </th>
-            <th></th>
-        </tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Active)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stock)
+        </th>
+        <th></th>
+    </tr>
 
-    @foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductName)
             </td>
-            <td>
+            <td class="@(item.Price > 100 ? "text-danger" : "")">
+                @* 價格大於100，顯示紅色 *@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
@@ -52,11 +56,11 @@
                 @Html.DisplayFor(modelItem => item.Stock)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.ProductId }) |
-                @Html.ActionLink("Details", "Details", new { id=item.ProductId }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.ProductId })
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ProductId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProductId })
             </td>
         </tr>
     }
 
-    </table>
+</table>
