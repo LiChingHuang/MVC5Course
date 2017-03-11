@@ -15,7 +15,7 @@ namespace MVC5Course.Controllers
         private FabricsEntities db = new FabricsEntities();
 
         // GET: Products
-        public ActionResult Index(String keyword)
+        public ActionResult Index(String keyword, String sortBy)
         {
             var data = db.Product.AsQueryable();
 
@@ -24,6 +24,15 @@ namespace MVC5Course.Controllers
                 data = data.Where(p => p.ProductName.Contains(keyword));
             }
 
+            if (sortBy == "+Price")
+            {
+                data = data.OrderBy(p => p.Price);
+            }
+            else
+            {
+                data = data.OrderByDescending(p => p.Price);
+            }
+            ViewBag.keyword = keyword; //讓View可記得排序的字串
             return View(data.Take(10));
             //return View(db.Product.ToList());
             //return View(db.Product.OrderByDescending(p => p.ProductId).Take(10).ToList());
