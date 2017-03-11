@@ -18,6 +18,11 @@
         <input type="submit" value="搜尋" />
     </form>
 </p>
+
+@using PagedList
+@using PagedList.Mvc
+
+@Html.PagedListPager(Model as IPagedList,(p) => Url.Action("Index",new { pageNo = p}))
 <table class="table">
     <tr>
         <th>
@@ -45,8 +50,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ProductName)
             </td>
-            <td class="@(item.Price > 100 ? "text-danger" : "")">
-                @* 價格大於100，顯示紅色 *@
+            <td class="@(item.Price > 100 ? "text-danger" : "")"> @* 價格大於100，顯示紅色 *@                
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
