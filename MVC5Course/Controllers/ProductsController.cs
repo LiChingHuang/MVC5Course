@@ -15,10 +15,18 @@ namespace MVC5Course.Controllers
         private FabricsEntities db = new FabricsEntities();
 
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(String keyword)
         {
+            var data = db.Product.AsQueryable();
+
+            if (!String.IsNullOrEmpty(keyword))
+            {
+                data = data.Where(p => p.ProductName.Contains(keyword));
+            }
+
+            return View(data.Take(10));
             //return View(db.Product.ToList());
-            return View(db.Product.OrderByDescending(p => p.ProductId).Take(10).ToList());
+            //return View(db.Product.OrderByDescending(p => p.ProductId).Take(10).ToList());
         }
 
         // GET: Products/Details/5
