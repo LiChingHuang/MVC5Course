@@ -13,16 +13,18 @@
 <p>
     <form>
         @*新增搜尋欄位*@
-        @*<input type="search" name="keyword" value="" />*@
-        @Html.TextBox("keyword") @* 搜尋框keep搜尋文字 *@
+        <input type="search" name="keyword" value="" />
+       @* @Html.TextBox("keyword") *@ @* 搜尋框keep搜尋文字 *@
         <input type="submit" value="搜尋" />
     </form>
 </p>
 
+@* 顯示分頁UI*@
 @using PagedList
 @using PagedList.Mvc
 
-@Html.PagedListPager(Model as IPagedList,(p) => Url.Action("Index",new { pageNo = p}))
+@Html.PagedListPager(Model as IPagedList, p => Url.Action("Index",new { pageNo = p}))
+
 <table class="table">
     <tr>
         <th>
@@ -30,10 +32,10 @@
         </th>
         <th>
             @*<a href="@Url.Action("Index", "Products", new { sortBy = "+Price" })">↑</a>*@ @*欄位排序*@
-            <a href="@Url.Action("Index", "Products", new { sortBy = "+Price", keyword = ViewBag.keyword })">↑</a> @*欄位搜尋並可排序*@
+            <a href="@Url.Action("Index", "Products", new { sortBy = "+Price", keyword = ViewBag.keyword, pageNo = ViewBag.pageNo})">↑</a> @*欄位搜尋並可排序*@
             @Html.DisplayNameFor(model => model.Price)
             @*<a href="@Url.Action("Index", "Products", new { sortBy = "-Price" })">↓</a>*@ @*欄位排序*@
-            <a href="@Url.Action("Index", "Products", new { sortBy = "-Price", keyword = ViewBag.keyword })">↓</a>@*欄位搜尋並可排序*@
+            <a href="@Url.Action("Index", "Products", new { sortBy = "-Price", keyword = ViewBag.keyword, pageNo = ViewBag.pageNo})">↓</a>@*欄位搜尋並可排序*@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Active)

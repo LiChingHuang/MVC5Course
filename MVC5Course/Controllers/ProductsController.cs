@@ -16,7 +16,7 @@ namespace MVC5Course.Controllers
         private FabricsEntities db = new FabricsEntities();
 
         // GET: Products
-        public ActionResult Index(String keyword, String sortBy, int pageNo=1)
+        public ActionResult Index(String sortBy, String keyword, int pageNo=1)
         {
             var data = db.Product.AsQueryable();
 
@@ -34,9 +34,11 @@ namespace MVC5Course.Controllers
                 data = data.OrderByDescending(p => p.Price);
             }
 
+            ViewBag.keyword = keyword; //讓View可記得搜尋的字串
+            ViewBag.pageNo = pageNo;   //讓View可記得搜尋的字串
             return View(data.ToPagedList(pageNo, 10)); //分頁
             
-            //ViewBag.keyword = keyword; //讓View可記得排序的字串
+
             //return View(data.Take(10));
             
             //return View(db.Product.ToList());
