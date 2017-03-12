@@ -23,7 +23,7 @@
 @using PagedList
 @using PagedList.Mvc
 
-@Html.PagedListPager(Model as IPagedList, p => Url.Action("Index",new { pageNo = p}))
+@Html.PagedListPager(Model as IPagedList, p => Url.Action("Index",new { keyword = ViewBag.keyword, pageNo = p}))
 
 <table class="table">
     <tr>

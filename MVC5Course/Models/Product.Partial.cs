@@ -4,6 +4,7 @@ namespace MVC5Course.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using Validations;
 
     [MetadataType(typeof(ProductMetaData))]
     public partial class Product
@@ -17,6 +18,7 @@ namespace MVC5Course.Models
         [Required]
         [StringLength(80, ErrorMessage="欄位長度不得大於 80 個字元")]
         [DisplayName("商品名稱")]
+        [商品名稱不能有Test]
         public string ProductName { get; set; }
         [Required]
         [Range(0, 1000, ErrorMessage = "({0})最低100!!")]
