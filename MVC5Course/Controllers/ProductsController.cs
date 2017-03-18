@@ -20,35 +20,62 @@ namespace MVC5Course.Controllers
         // GET: Products
         public ActionResult Index(String sortBy, String keyword, int pageNo=1)
         {
-            //var data = db.Product.AsQueryable();
-            var data = repoProduct.All().AsQueryable();
+            doSearchonIndex(sortBy, keyword, pageNo);
 
-            if (!String.IsNullOrEmpty(keyword))
-            {
-                data = data.Where(p => p.ProductName.Contains(keyword));
-            }
-
-            if (sortBy == "+Price")
-            {
-                data = data.OrderBy(p => p.Price);
-            }
-            else
-            {
-                data = data.OrderByDescending(p => p.Price);
-            }
-
-            ViewBag.keyword = keyword; //讓View可記得搜尋的字串
-            ViewBag.pageNo = pageNo;   //讓View可記得搜尋的字串
-            return View(data.ToPagedList(pageNo, 10)); //分頁
-            
-
+            return View();
             //return View(data.Take(10));
-            
+
             //return View(db.Product.ToList());
 
             //return View(db.Product.OrderByDescending(p => p.ProductId).Take(10).ToList());
         }
 
+        private void doSearchonIndex(string sortBy, string keyword, int pageNo)
+        {
+            //var data = db.Product.AsQueryable();
+            var all = repoProduct.All().AsQueryable();
+
+            if (!String.IsNullOrEmpty(keyword))
+            {
+                all = all.Where(p => p.ProductName.Contains(keyword));
+            }
+
+            if (sortBy == "+Price")
+            {
+                all = all.OrderBy(p => p.Price);
+            }
+            else
+            {
+                all = all.OrderByDescending(p => p.Price);
+            }
+
+            ViewBag.keyword = keyword; //讓View可記得搜尋的字串
+            ViewBag.pageNo = pageNo;   //讓View可記得搜尋的字串
+            ViewData.Model = all.ToPagedList(pageNo, 10);
+            //return View(all.ToPagedList(pageNo, 10)); //分頁
+        }
+
+        [HttpPost]
+        public ActionResult Index(Product[] data, String sortBy, String keyword, int pageNo = 1)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var item in data)
+                {
+                    var prod = repoProduct.Find(item.ProductId);
+                    prod.ProductName = item.ProductName;
+                    prod.Price = item.Price;
+                    prod.Active = item.Active;
+                    prod.Stock = item.Stock;                    
+                }
+
+                repoProduct.UnitOfWork.Commit();
+                return RedirectToAction("Index");
+            }
+
+            doSearchonIndex(sortBy, keyword, pageNo);
+            return View();
+        }
         // GET: Products/Details/5
         public ActionResult Details(int? id)
         {

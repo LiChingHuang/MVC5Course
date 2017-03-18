@@ -25,48 +25,65 @@
 
 @Html.PagedListPager(Model as IPagedList, p => Url.Action("Index",new { keyword = ViewBag.keyword, pageNo = p}))*@
 @Html.Partial("_Pager",Model)
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductName)
-        </th>
-        <th>
-            @*<a href="@Url.Action("Index", "Products", new { sortBy = "+Price" })">↑</a>*@ @*欄位排序*@
-            <a href="@Url.Action("Index", "Products", new { sortBy = "+Price", keyword = ViewBag.keyword, pageNo = ViewBag.pageNo})">↑</a> @*欄位搜尋並可排序*@
-            @Html.DisplayNameFor(model => model.Price)
-            @*<a href="@Url.Action("Index", "Products", new { sortBy = "-Price" })">↓</a>*@ @*欄位排序*@
-            <a href="@Url.Action("Index", "Products", new { sortBy = "-Price", keyword = ViewBag.keyword, pageNo = ViewBag.pageNo})">↓</a>@*欄位搜尋並可排序*@
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Active)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Stock)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+@using (Html.BeginForm())
+{
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td class="@(item.Price > 100 ? "text-danger" : "")"> @* 價格大於100，顯示紅色 *@                
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stock)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ProductId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ProductId })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @*<a href="@Url.Action("Index", "Products", new { sortBy = "+Price" })">↑</a>*@ @*欄位排序*@
+                <a href="@Url.Action("Index", "Products", new { sortBy = "+Price", keyword = ViewBag.keyword, pageNo = ViewBag.pageNo })">↑</a> @*欄位搜尋並可排序*@
+                @Html.DisplayNameFor(model => model.Price)
+                @*<a href="@Url.Action("Index", "Products", new { sortBy = "-Price" })">↓</a>*@ @*欄位排序*@
+                <a href="@Url.Action("Index", "Products", new { sortBy = "-Price", keyword = ViewBag.keyword, pageNo = ViewBag.pageNo })">↓</a>@*欄位搜尋並可排序*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @{
+            var data = Model.ToArray(); //將資料變成陣列
+        }
+        @*@foreach (var item in Model)*@
+        @for(var i =0; i < data.Length; i++)
+        {
+            @Html.HiddenFor(modelItem => data[i].ProductId)  //將item用data[i]取代
+            <tr>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].ProductName)
+                    @Html.ValidationMessageFor(modelItem => data[i].ProductName) @* 顯示例外訊息*@
+                </td>
+                <td class="@(data[i].Price > 100 ? "text-danger" : "")">
+                    @* 價格大於100，顯示紅色 *@
+                    @Html.EditorFor(modelItem => data[i].Price)
+                    @Html.ValidationMessageFor(modelItem => data[i].Price) @* 顯示例外訊息*@
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].Active)
+                    @Html.ValidationMessageFor(modelItem => data[i].Active) @* 顯示例外訊息*@
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].Stock)
+                    @Html.ValidationMessageFor(modelItem => data[i].Stock) @* 顯示例外訊息*@
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = data[i].ProductId }) |
+                        @Html.ActionLink("Details", "Details", new { id = data[i].ProductId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = data[i].ProductId })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    <input type="submit" value="送出" />
+}
+
