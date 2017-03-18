@@ -20,11 +20,11 @@
 </p>
 
 @* 顯示分頁UI*@
-@using PagedList
+@*@using PagedList
 @using PagedList.Mvc
 
-@Html.PagedListPager(Model as IPagedList, p => Url.Action("Index",new { keyword = ViewBag.keyword, pageNo = p}))
-
+@Html.PagedListPager(Model as IPagedList, p => Url.Action("Index",new { keyword = ViewBag.keyword, pageNo = p}))*@
+@Html.Partial("_Pager",Model)
 <table class="table">
     <tr>
         <th>

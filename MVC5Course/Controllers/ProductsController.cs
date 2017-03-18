@@ -11,6 +11,7 @@ using PagedList;
 
 namespace MVC5Course.Controllers
 {
+    [Authorize(Users ="HLC")]
     public class ProductsController : Controller
     {
         //private FabricsEntities db = new FabricsEntities();
@@ -157,7 +158,6 @@ namespace MVC5Course.Controllers
             repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
-
  //       protected override void Dispose(bool disposing)
  //       {
  //           if (disposing)
