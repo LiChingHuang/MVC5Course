@@ -45,6 +45,8 @@ namespace MVC5Course.Controllers
             if(ModelState.IsValid)
             {
                 FormsAuthentication.RedirectFromLoginPage(Login.Username, false);
+                TempData["LoginResult"] = Login;
+
                 if (ReturnUrl.StartsWith("/"))
                 {
                     return Redirect(ReturnUrl);
