@@ -20,5 +20,10 @@ namespace MVC5Course.Controllers
 
             return PartialView(data);
         }
+
+        public ActionResult NewPage()
+        {
+            return View();
+        }
     }
 }
