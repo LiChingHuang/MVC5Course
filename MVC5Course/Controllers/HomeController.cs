@@ -1,4 +1,5 @@
-﻿using MVC5Course.Models;
+﻿using MVC5Course.ActionFilters;
+using MVC5Course.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,11 @@ namespace MVC5Course.Controllers
             return View();
         }
 
+        [設定本控制器常用的ViewBag資料]
         //public ActionResult About(string ex="")
         public ActionResult About(int ex) //會發生ArgumentException例外
         {
-            ViewBag.Message = "Your application description page!";
+            //ViewBag.Message = "Your application description page!";
 
             //if (ex == "err")
             //{
@@ -33,6 +35,7 @@ namespace MVC5Course.Controllers
             return View();
         }
 
+        [僅在本機開發測試用]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
