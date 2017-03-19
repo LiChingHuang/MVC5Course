@@ -30,6 +30,7 @@ namespace MVC5Course.Models
 
         [Required]
         [DisplayName("商品庫存量")]
+        [Range(0,9999)]
         public Nullable<decimal> Stock { get; set; }
     
         public virtual ICollection<OrderLine> OrderLine { get; set; }

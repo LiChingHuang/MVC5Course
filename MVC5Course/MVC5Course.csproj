@@ -393,6 +393,8 @@
     <Content Include="Views\Shared\_Pager.cshtml" />
     <Content Include="Views\AR\Index.cshtml" />
     <Content Include="Views\AR\View3.cshtml" />
+    <Content Include="Views\Shared\Error_ArgumentException.cshtml" />
+    <Content Include="Views\Shared\Error_DbEntityValidationException.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

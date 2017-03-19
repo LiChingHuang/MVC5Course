@@ -8,10 +8,12 @@ using System.Web;
 using System.Web.Mvc;
 using MVC5Course.Models;
 using PagedList;
+using System.Data.Entity.Validation;
 
 namespace MVC5Course.Controllers
 {
-    [Authorize(Users ="HLC")]
+    
+    //[Authorize]
     public class ProductsController : BaseController
     {
         //private FabricsEntities db = new FabricsEntities();
@@ -141,26 +143,32 @@ namespace MVC5Course.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [HandleError(View = "Error_DbEntityValidationException", ExceptionType = typeof(DbEntityValidationException))]
         //public ActionResult Edit([Bind(Include = "ProductId,ProductName,Price,Active,Stock,IsDeleted")] Product product)
         public ActionResult Edit(int id, FormCollection form)
         {
             var product = repoProduct.Find(id);
             //if (TryUpdateModel(product)) //Binding有異動的資料
-            if (TryUpdateModel(product,new string[] { "ProductName"})) //指定欄位 Binding
+            if (TryUpdateModel(product,new string[] { "ProductName", "Stock" })) //指定欄位 Binding
             {
-                repoProduct.UnitOfWork.Commit();
-                return RedirectToAction("Index");
+                //repoProduct.UnitOfWork.Commit();
+                //return RedirectToAction("Index");
             }
+
             //if (ModelState.IsValid)
             //{
             //    var db = repoProduct.UnitOfWork.Context;
             //    db.Entry(product).State = EntityState.Modified;
-                //db.SaveChanges();
+            //db.SaveChanges();
 
             //    repoProduct.UnitOfWork.Commit();
             //    return RedirectToAction("Index");
             //}
-            return View(product);
+
+            //return View(product);
+
+            repoProduct.UnitOfWork.Commit();
+            return RedirectToAction("Index");
         }
 
         // GET: Products/Delete/5
