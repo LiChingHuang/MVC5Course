@@ -96,6 +96,17 @@ namespace MVC5Course.Controllers
             return View(product);
         }
 
+        public ActionResult ProductOrderLines( int id) //要跟View一樣名字
+        {
+            Product product = repoProduct.Find(id);
+
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
+            return View(product.OrderLine);
+        }
+
         // GET: Products/Create
         public ActionResult Create()
         {
