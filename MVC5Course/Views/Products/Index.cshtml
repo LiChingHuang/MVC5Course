@@ -12,9 +12,10 @@
 
 <p>
     <form>
+        @Html.DropDownList("FilterActive",null,"請選擇Active狀態", new { onchange = ""})
         @*新增搜尋欄位*@
         <input type="search" name="keyword" value="" />
-       @* @Html.TextBox("keyword") *@ @* 搜尋框keep搜尋文字 *@
+        @* @Html.TextBox("keyword") *@ @* 搜尋框keep搜尋文字 *@
         <input type="submit" value="搜尋" />
     </form>
 </p>
@@ -60,6 +61,9 @@
                 <td>
                     @Html.EditorFor(modelItem => data[i].ProductName)
                     @Html.ValidationMessageFor(modelItem => data[i].ProductName) @* 顯示例外訊息*@
+                    <script>
+                        $('#@Html.IdFor(modelItem => data[i].ProductName)')  @* 顯示欄位ID*@
+                    </script>
                 </td>
                 <td class="@(data[i].Price > 100 ? "text-danger" : "")">
                     @* 價格大於100，顯示紅色 *@

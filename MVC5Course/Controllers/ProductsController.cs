@@ -20,8 +20,15 @@ namespace MVC5Course.Controllers
         //ProductRepository repo = RepositoryHelper.GetProductRepository();
 
         // GET: Products
-        public ActionResult Index(String sortBy, String keyword, int pageNo=1)
+        public ActionResult Index(String FilterActive, String sortBy, String keyword, int pageNo=1)
         {
+            //靜態選單
+            //ViewBag.FilterActive = new SelectList(new List<string> { "True", "False" });
+
+            //動態選單(db)
+            var activeOptions = repoProduct.All().Select(p => p.Active.HasValue ? p.Active.Value.ToString() : "False").Distinct().ToList();
+            ViewBag.FilterActive = new SelectList(activeOptions);
+
             doSearchonIndex(sortBy, keyword, pageNo);
 
             return View();
@@ -53,12 +60,13 @@ namespace MVC5Course.Controllers
 
             ViewBag.keyword = keyword; //讓View可記得搜尋的字串
             ViewBag.pageNo = pageNo;   //讓View可記得搜尋的字串
+
             ViewData.Model = all.ToPagedList(pageNo, 10);
             //return View(all.ToPagedList(pageNo, 10)); //分頁
         }
 
         [HttpPost]
-        public ActionResult Index(Product[] data, String sortBy, String keyword, int pageNo = 1)
+        public ActionResult Index(String FilterActive, Product[] data, String sortBy, String keyword, int pageNo = 1)
         {
             if (ModelState.IsValid)
             {
@@ -74,6 +82,10 @@ namespace MVC5Course.Controllers
                 repoProduct.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
+
+            //動態選單(db)
+            var activeOptions = repoProduct.All().Select(p => p.Active.HasValue ? p.Active.Value.ToString() : "False").Distinct().ToList();
+            ViewBag.FilterActive = new SelectList(activeOptions);
 
             doSearchonIndex(sortBy, keyword, pageNo);
             return View();
@@ -160,7 +172,7 @@ namespace MVC5Course.Controllers
         {
             var product = repoProduct.Find(id);
             //if (TryUpdateModel(product)) //Binding有異動的資料
-            if (TryUpdateModel(product,new string[] { "ProductName", "Stock" })) //指定欄位 Binding
+            if (TryUpdateModel(product,new string[] { "ProductName", "Stock","Active" })) //指定欄位 Binding
             {
                 //repoProduct.UnitOfWork.Commit();
                 //return RedirectToAction("Index");
