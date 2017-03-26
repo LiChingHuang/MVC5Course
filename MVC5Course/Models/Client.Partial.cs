@@ -27,6 +27,7 @@ namespace MVC5Course.Models
         [UIHint("顯示性別")]
         public string Gender { get; set; }
 
+        [DataType(DataType.Date)]
         public Nullable<System.DateTime> DateOfBirth { get; set; }
 
         [UIHint("CreditRating")]
